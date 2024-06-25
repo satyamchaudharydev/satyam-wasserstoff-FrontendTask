@@ -23,23 +23,21 @@ interface UseCodeEditorProps {
   language?: string;
 }
 
-export default function useCodeEditor({ 
-  value, 
-  onChange, 
-  extensions = [], 
+export default function useCodeEditor({
+  value,
+  onChange,
+  extensions = [],
   readOnly,
-  language 
+  language,
 }: UseCodeEditorProps): React.RefObject<HTMLDivElement> {
   const { ref, view } = useCodeMirror({
     extensions: [onUpdate(onChange), ...extensions],
-    language
+    language,
   });
-  console.log("view",view, value)
 
   useEffect(() => {
     if (view) {
       const editorValue = view.state.doc.toString();
-    console.log("editorValue",view)
       if (value !== editorValue) {
         view.dispatch({
           changes: {
