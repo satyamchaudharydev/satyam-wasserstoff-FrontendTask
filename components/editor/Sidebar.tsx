@@ -4,7 +4,7 @@ import SideBarHeader from "./SideBarHeader";
 import { cn } from "@/lib/utils";
 import FileTitle from "./FileTitle";
 import { EditorContext } from "@/store/EditorContext";
-import { FileType, FileSystem } from "@/lib/types";
+import { FileType, FileSystem, Folder } from "@/lib/types";
 
 const Sidebar: React.FC = () => {
   const {
@@ -129,7 +129,7 @@ const Sidebar: React.FC = () => {
   const onTitleChange = (
     newTitle: string,
     filePath: string,
-    onFail: () => void,
+    onFail: () => void
   ) => {
     const path = filePath.split("/");
     const newFileSystem = JSON.parse(JSON.stringify(fileSystem));
@@ -142,10 +142,17 @@ const Sidebar: React.FC = () => {
         // Check for duplicate item in the current directory
         const parentDir = path
           .slice(0, -1)
-          .reduce((acc, key) => acc[key].children, fileSystem);
+          .reduce((acc, key) => {
+            if (acc[key].type === "folder") {
+              const folder = acc[key] as Folder
+              return folder.children;
+            }
+            return acc;
+          }, fileSystem);
+
         if (parentDir[newTitle]) {
           alert(
-            "An item with this name already exists in the current directory.",
+            "An item with this name already exists in the current directory."
           );
           onFail();
           return;

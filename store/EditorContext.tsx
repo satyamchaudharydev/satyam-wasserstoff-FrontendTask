@@ -76,12 +76,6 @@ export const EditorProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setOpenFiles([...openFiles, newOpenFile])
   }
   
-  // const updateFileSystem = (newFileSystem: FileSystem) => {
-    //     setFileSystem(newFileSystem);
-    // }
-    // const updateSelectedItem = (path: string) => {
-      //     setSelectedItem(path);
-      // }
       return (
         <EditorContext.Provider value={{ 
           fileSystem, 
