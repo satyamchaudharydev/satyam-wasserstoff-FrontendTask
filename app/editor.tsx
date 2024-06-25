@@ -17,14 +17,15 @@ const Editor: React.FC = () => {
       <EditorProvider>
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel
-            defaultSize={13}
-            minSize={10}
-            className="bg-foreground"
+            defaultSize={14}
+            minSize={9}
           >
             <Sidebar />
           </ResizablePanel>
           <ResizableHandle className="bg-gray hover:bg-primary" />
-          <ResizablePanel>
+          <ResizablePanel
+            defaultSize={86}
+          >
             <FileContentProvider>
               <EditorTemplate />
             </FileContentProvider>

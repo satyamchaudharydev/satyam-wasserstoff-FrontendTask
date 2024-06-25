@@ -277,7 +277,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className=" bg-foreground h-screen p-4 overflow-auto"
+      className="w-full bg-foreground h-screen p-4 overflow-auto"
       onClick={handleSidebarClick}
     >
       <SideBarHeader

@@ -8,6 +8,7 @@ import {
 import Button from "../ui/Button";
 import { createPortal } from "react-dom";
 import { useEditorContext } from "@/store/EditorContext";
+import { stat } from "fs";
 
 const NoteMaker = ({ content }: { content: NoteFileContent }) => {
   const { selectedItem } = useEditorContext();
@@ -67,7 +68,7 @@ const NoteMaker = ({ content }: { content: NoteFileContent }) => {
              border-white/20 w-[300px] h-[300px]
              cursor-pointer hover:border-white/40
              "
-            drag
+            // drag
             onClick={() => {
               setShowEditor(true);
               setSelectedNote({
@@ -78,27 +79,35 @@ const NoteMaker = ({ content }: { content: NoteFileContent }) => {
             }}
             // onDragEnd={handleDragEnd}
           >
-            <div
-              className="mb-auto relative rounded-full p-1 px-4
-             bg-foreground w-fit text-[14px] text-white/80"
-            >
-              {note.status || "todo"}
-            </div>
-            <motion.p layout className="mt-2 text-white">
+            {
+              note.status &&  (
+                <motion.div
+                layout="position"
+                className="mb-auto relative rounded-full p-1 px-4
+               bg-foreground w-fit text-[14px] text-white/80"
+              >
+                {note.status}
+              </motion.div>
+              )
+            }
+           
+            <motion.p layout="position" className="mt-2 text-white">
               {note.content}
             </motion.p>
           </motion.div>
         ))}
       </div>
-      {createPortal(
-        <NoteEditor
-          onClose={onCloseEditor}
-          onSave={saveNote}
-          show={showEditor}
-          selectedNote={selectedNote}
-        />,
-        document.body,
-      )}
+      {
+        showEditor && (
+          <NoteEditor
+            onClose={onCloseEditor}
+            onSave={saveNote}
+            show={showEditor}
+            selectedNote={selectedNote}
+        />
+        )
+      }
+     
     </div>
   );
 };
@@ -117,14 +126,28 @@ const NoteEditor = ({
   const [status, setStatus] = useState(selectedNote?.status || "");
   const [noteData, setNoteData] = useState(selectedNote?.content || "");
 
+  useEffect(() => {
+    setNoteData(selectedNote?.content || "");
+    setStatus(selectedNote?.status || "");
+  }, [selectedNote])
+
   const changeStatus = (text: string) => {
     setStatus(text);
   };
-
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
+  const renderEditor = () => {
+    return (
+      <>
+         <motion.div
+          initial={{ opacity: 0, 
+            scale: 0.8
+          }}
+          animate={{ opacity: 1, 
+            scale: 1
+          }}
+          exit={{ 
+            opacity: 0,
+            y: "100%"
+          }}
           layoutId={selectedNote?.id || "new"}
           className="p-8 w-full h-full absolute inset-0 z-[9999] backdrop-blur-sm"
         >
@@ -154,13 +177,21 @@ const NoteEditor = ({
             />
           </div>
         </motion.div>
-      )}
-    </AnimatePresence>
-  );
+      </>
+    )
+  }
+  return (
+    <>
+      {
+        renderEditor()
+      }
+    </>
+   
+  )
 };
 
 const Status = ({
-  status,
+  status="todo",
   changeStatus,
 }: {
   status: string;
@@ -194,7 +225,7 @@ const Status = ({
   const handlePillClick = () => {
     setIsEditing(true);
   };
-
+  
   return (
     <div className="flex gap-2 justify-center items-center">
       <div className="text-[14px] text-white/80 font-[400]">Status: </div>
@@ -204,6 +235,7 @@ const Status = ({
             ref={inputRef}
             type="text"
             value={status}
+            defaultValue={status}
             onChange={handleChange}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}

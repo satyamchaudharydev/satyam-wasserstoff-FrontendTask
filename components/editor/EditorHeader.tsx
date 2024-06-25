@@ -27,7 +27,6 @@ const EditorHeader = () => {
                 <Reorder.Item 
                     key={file} 
                     value={file}
-                    as={motion.button}
                     className={cn(
                         "px-4 py-1 text-white h-full text-[14px] flex justify-center items-center relative",
                         isFileOpen(file) ? 'bg-background' : 'opacity-[0.6]'

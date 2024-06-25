@@ -36,9 +36,7 @@ const ListMaker = ({ content }: {content: LtFileContent}) => {
           </div>
       
       </div>
-      {/* <Preview>
-          <List list={list} />
-      </Preview> */}
+    
     </>
 
   );
@@ -48,7 +46,7 @@ const List = ({list}: {list: {id: string, content: string}[]}) => {
   return (
       <ul className='mt-6 w-full gap-4 h-full'>
           {list.map((item, index) => (
-              <li key={index} className="p-2 bg-[#009b5c] text-white rounded-[6px] mt-4">{item.content}</li>
+              <li key={index} className="p-2 bg-primary text-black rounded-[6px] mt-4">{item.content}</li>
           ))}
      </ul>
   );

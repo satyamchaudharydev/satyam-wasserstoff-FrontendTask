@@ -52,9 +52,10 @@ const EditorTemplate: React.FC = () => {
   return (
     <div className="flex flex-col w-full h-full bg-red-50">
       <EditorHeader />
-      <div className="flex flex-1 bg-background">
+      <div className="flex flex-1 bg-background w-full">
         <AnimatePresence mode="wait">
           <motion.div
+            className="w-full"
             key={selectedItem ? selectedItem.name : "empty"}
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
